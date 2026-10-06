@@ -76,7 +76,3 @@ Jalankan pemeriksaan fisika dengan `node verify.cjs`.
 - **465 assertion fisika:** hasil analitik, akar waktu ke lantai, puncak lintasan, kecepatan horizontal, benturan, tinggi tambahan pijakan, serta tembakan yang dapat memenangkan semua level.
 - **Uji browser Microsoft Edge:** desktop 1440 px dan mobile 390 px; lempar/jeda/lanjut; native drag-and-drop pemain serta balok; penambahan/pengurangan empat pijakan; alternatif keyboard dan event sentuh; tiga kemenangan tantangan; penyimpanan setelah reload; batas dua perbandingan; ekspor CSV; konfirmasi hapus; serta lintasan parameter ekstrem. Tidak ditemukan error JavaScript atau overflow horizontal halaman pada viewport tersebut.
 - Screenshot hasil tersedia di folder `screenshots/`.
-
-## Pengumpulan
-
-Kumpulkan URL website GitHub Pages, URL repository source code, screenshot mode laboratorium/tantangan/buku eksperimen, dan deskripsi singkat pada paragraf pembuka README ini melalui Google Drive.
