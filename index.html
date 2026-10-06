@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1867ef">
+  <meta name="description" content="Sportslab: virtual lab gerak parabola dengan permainan basket, simulasi fisika, dan buku eksperimen interaktif.">
+  <title>Sportslab — Gerak Parabola</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="playground.css">
+  <script src="physics.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Sportslab beranda"><span class="brand-icon" aria-hidden="true">↗</span>sportslab<span class="brand-dot">.</span></a>
+    <nav aria-label="Navigasi utama"><a class="nav-active" href="#arena">Virtual lab</a><a href="#notebook">Buku eksperimen</a><a href="#guide">Panduan</a></nav>
+    <span class="header-tag"><span></span> BASKET × FISIKA</span>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow">FISIKA TPB / LAB 01 <span class="eyebrow-line"></span> GERAK PARABOLA</p><h1 id="page-title">Setiap lemparan,<br>sebuah <em>penemuan.</em></h1><p class="intro-text">Lapangan jadi laboratorium. Atur lemparanmu, temukan lintasan terbaik,<br class="desktop-br"> dan pahami fisika di balik sebuah tembakan.</p></div>
+      <div class="intro-aside"><span class="sport-icon" aria-hidden="true">◉</span><div><strong>Basketball playground</strong><span>Satu bola. Banyak kemungkinan.</span></div><span class="lab-number">01</span></div>
+    </section>
+    <section id="arena" class="lab-layout" aria-label="Laboratorium basket interaktif">
+      <article class="arena-card">
+        <header class="arena-header"><div class="scene-label"><span class="live-dot"></span><strong>Lapangan terbuka</strong><span class="scene-weather">CERAH · BUMI</span></div><button id="fullscreen" class="icon-button" aria-label="Tampilkan lapangan dalam layar penuh" title="Layar penuh">⛶</button></header>
+        <div class="canvas-wrap" id="canvas-wrap">
+          <canvas id="court" width="1280" height="520" aria-label="Simulasi gerak parabola bola basket. Gunakan kontrol di sebelah lapangan untuk mengatur dan melempar bola.">Browser Anda perlu mendukung Canvas untuk menampilkan simulasi. Parameter dan hasil tetap tersedia di panel kontrol.</canvas>
+          <div class="world-badge"><span class="pixel-square"></span> PIXEL PARK <span>EST. 2026</span></div>
+          <div id="challenge-hud" class="challenge-hud" hidden><span id="level-label">TANTANGAN 1 / 3</span><strong id="challenge-goal">Tembakan pertama</strong><span id="attempts-label">0 percobaan</span></div>
+          <div class="canvas-tip" id="canvas-tip"><span aria-hidden="true">↔</span> Geser pemain untuk mengubah jarak</div>
+          <div id="player-drag" class="player-drag" draggable="true" role="button" tabindex="0" aria-label="Pemain basket. Seret ke kiri atau kanan; gunakan tombol panah untuk mengubah jarak." title="Seret pemain atau gunakan tombol panah"></div>
+          <div id="step-zone" class="step-zone" aria-label="Letakkan balok pijakan di sini"><span>＋ PIJAKAN</span></div>
+          <div id="step-tray" class="step-tray"><div class="step-copy"><strong>Naik level. Secara harfiah.</strong><span>Tarik balok ke pemain ↗</span></div><div id="step-block" class="step-block" draggable="true" role="button" tabindex="0" aria-label="Balok pijakan 0.6 meter. Seret ke pemain atau tekan Enter untuk menambah."><span>＋</span><small>0.6 m</small></div><div class="step-counter"><button id="step-remove" aria-label="Kurangi satu balok pijakan">−</button><output id="step-count">0</output><button id="step-add" aria-label="Tambah satu balok pijakan">＋</button></div></div>
+          <div class="canvas-bottom"><span id="world-distance">8.0 m ke ring</span><span>g = 9.81 m/s² <i>·</i> tanpa hambatan udara</span></div>
+        </div>
+        <div class="playback-bar"><div class="playback-actions"><button id="launch" class="button primary"><span aria-hidden="true">↗</span> Lempar bola</button><button id="pause" class="button secondary" disabled><span aria-hidden="true">Ⅱ</span> Jeda</button><button id="reset" class="icon-button reset-button" aria-label="Reset simulasi" title="Reset simulasi">↺</button></div><label class="slow-control"><input id="slow" type="checkbox"><span>Gerak lambat</span><span class="speed-badge" id="speed-badge">1×</span></label></div>
+        <div id="feedback" class="feedback" role="status" aria-live="polite"><span class="feedback-icon" aria-hidden="true">✦</span><p id="feedback-text">Siap bereksperimen? Atur lemparan, lalu lihat ke mana bola melaju.</p></div>
+        <section class="metrics" aria-label="Pengukuran lintasan teoretis"><div><span>Waktu terbang <small>hingga lantai</small></span><strong><output id="metric-time">—</output><small>s</small></strong></div><div><span>Tinggi maksimum <small>dari lantai</small></span><strong><output id="metric-height">—</output><small>m</small></strong></div><div><span>Jangkauan <small>hingga lantai</small></span><strong><output id="metric-range">—</output><small>m</small></strong></div><div class="live-metric"><span>Waktu simulasi</span><strong><output id="metric-live">0.00</output><small>s</small></strong></div></section>
+      </article>
+      <aside class="controls-card" aria-label="Kontrol eksperimen">
+        <div class="mode-switch" role="group" aria-label="Mode simulasi"><button id="lab-mode" class="selected" aria-pressed="true">⌁ Laboratorium</button><button id="game-mode" aria-pressed="false">⚑ Tantangan</button></div>
+        <div class="control-heading"><p class="eyebrow">KENDALI ADA DI TANGANMU</p><h2>Racik lemparanmu.</h2><p id="mode-description">Ubah satu parameter. Amati perbedaannya.</p></div>
+        <fieldset id="parameters"><legend class="sr-only">Parameter lemparan</legend>
+          <div class="control-group"><div class="control-label"><label for="angle">Sudut lemparan</label><div class="number-unit"><input id="angle-number" type="number" min="10" max="80" step="1" value="48" aria-label="Sudut lemparan dalam derajat"><span>°</span></div></div><input id="angle" type="range" min="10" max="80" step="1" value="48"><div class="range-labels"><span>10°</span><span>80°</span></div></div>
+          <div class="control-group"><div class="control-label"><label for="speed">Kecepatan awal</label><div class="number-unit"><input id="speed-number" type="number" min="3" max="18" step="0.1" value="9.6" aria-label="Kecepatan awal dalam meter per detik"><span>m/s</span></div></div><input id="speed" type="range" min="3" max="18" step="0.1" value="9.6"><div class="range-labels"><span>3 m/s</span><span>18 m/s</span></div></div>
+          <div class="control-group"><div class="control-label"><label for="distance">Jarak ke ring</label><div class="number-unit"><input id="distance-number" type="number" min="3" max="11" step="0.1" value="8" aria-label="Jarak ke ring dalam meter"><span>m</span></div></div><input id="distance" type="range" min="3" max="11" step="0.1" value="8"><div class="range-labels"><span>3 m</span><span>11 m</span></div></div>
+          <div class="height-control"><label for="height">Tinggi pelepasan</label><div class="number-unit"><input id="height" type="number" min="1" max="4.9" step="0.1" value="1.9"><span>m</span></div></div>
+        </fieldset>
+        <div class="visual-options"><h3>Bantuan visual</h3><label><span>Prediksi lintasan</span><input id="trajectory" type="checkbox" role="switch" checked></label><label><span>Vektor kecepatan</span><input id="vectors" type="checkbox" role="switch"></label><label><span>Grid pengukuran</span><input id="grid" type="checkbox" role="switch"></label></div>
+        <div id="challenge-next-wrap" hidden><button id="next-challenge" class="button primary full-width" disabled>Tantangan berikutnya →</button></div>
+        <div class="assumption-note"><span aria-hidden="true">ⓘ</span><p>Model ideal: gravitasi konstan, tanpa hambatan udara. Tinggi ring <strong>3.05 m</strong>. Bola dan ring memiliki ukuran fisik.</p></div>
+      </aside>
+    </section>
+    <section id="notebook" class="notebook-card" aria-labelledby="notebook-title">
+      <header class="section-header"><div><p class="eyebrow">AMATI. CATAT. TEMUKAN.</p><h2 id="notebook-title">Buku eksperimen<span class="count-badge" id="record-count">0</span></h2><p>Setiap percobaan punya cerita. Bandingkan untuk menemukan polanya.</p></div><div class="notebook-actions"><button id="save" class="button primary" disabled>＋ Catat hasil</button><button id="export" class="button secondary" disabled>↓ CSV</button><button id="clear-records" class="icon-button" aria-label="Hapus semua catatan" title="Hapus semua catatan" disabled>⌫</button></div></header>
+      <div id="empty-notebook" class="empty-notebook"><span aria-hidden="true">▤</span><div><strong>Eksperimen pertamamu dimulai di lapangan.</strong><p>Selesaikan lemparan, lalu klik “Catat hasil”. Pilih maksimal dua catatan untuk membandingkan lintasannya.</p></div></div>
+      <div id="table-wrap" class="table-wrap" hidden><table><caption class="sr-only">Catatan eksperimen gerak parabola. Pilih maksimal dua baris untuk membandingkan lintasan.</caption><thead><tr><th scope="col">Bandingkan</th><th scope="col">Percobaan</th><th scope="col">Sudut</th><th scope="col">v₀</th><th scope="col">Jarak ring</th><th scope="col">y₀</th><th scope="col">t lantai</th><th scope="col">y maks.</th><th scope="col">Jangkauan</th><th scope="col">Hasil</th></tr></thead><tbody id="records"></tbody></table></div>
+      <p class="notebook-footnote" id="comparison-note">Catatan disimpan di browser ini. Waktu dan jangkauan tabel merupakan nilai teoretis hingga lantai.</p>
+    </section>
+    <section id="guide" class="learning-section" aria-labelledby="guide-title"><div class="learning-intro"><p class="eyebrow">DI BALIK TEMBAKAN</p><h2 id="guide-title">Mainkan bolanya. <br>Pahami fisikanya.</h2><p>Gerak horizontal dan vertikal bekerja bersama, membentuk lintasan parabola.</p><span class="topic-pill">↗ Gerak dua dimensi</span></div><div class="learning-content"><details open><summary><span class="step-number">01</span> Eksperimen: apa pengaruh sudut?<span class="details-plus">＋</span></summary><div class="details-body"><p>Tetapkan kecepatan <strong>10 m/s</strong>, tinggi <strong>1.9 m</strong>, dan jarak yang sama. Coba sudut <strong>30°, 45°, dan 60°</strong>. Catat setiap hasil dan bandingkan lintasannya.</p><p class="reflection">Pikirkan: sudut mana memberi jangkauan terjauh? Apakah lintasan paling tinggi juga paling jauh?</p></div></details><details><summary><span class="step-number">02</span> Eksperimen: seberapa kuat lemparannya?<span class="details-plus">＋</span></summary><div class="details-body"><p>Tetapkan sudut <strong>50°</strong>. Coba kecepatan <strong>8, 10, dan 12 m/s</strong> dengan tinggi serta jarak yang sama. Bandingkan waktu terbang, tinggi maksimum, dan jangkauan.</p><p class="reflection">Pikirkan: ketika kecepatan bertambah, apakah semua hasil bertambah dengan perbandingan yang sama?</p></div></details><details><summary><span class="step-number">03</span> Rumus & asumsi model<span class="details-plus">＋</span></summary><div class="details-body"><div class="formula">x(t) = x₀ + v₀ cos(θ) t<br>y(t) = y₀ + v₀ sin(θ) t − ½gt²</div><p>Kecepatan horizontal tetap. Kecepatan vertikal berubah karena gravitasi: <strong>vᵧ(t) = v₀ sin(θ) − gt</strong>. Di puncak lintasan, vᵧ = 0, tetapi bola tetap bergerak horizontal.</p><p>Tinggi maksimum: <strong>y₀ + (v₀ sin θ)² / (2g)</strong>. Waktu hingga lantai dihitung dari akar positif y(t) = 0. Jangkauan dihitung sebagai v₀ cos θ × waktu tersebut.</p><p>Sudut 45° menghasilkan jangkauan maksimum ketika tinggi awal dan akhir sama. Dalam lab ini bola dilepas di atas lantai, sehingga sudut optimum ke lantai dapat lebih kecil dari 45°.</p><p>Ukuran model: radius bola 0.12 m, bukaan ring 0.45 m, tinggi ring 3.05 m. Tembakan masuk saat bola melewati bukaan ring ketika turun. Simulasi berhenti saat masuk, mengenai ring/papan, atau menyentuh lantai; pantulan tidak dimodelkan.</p></div></details></div></section>
+  </main>
+  <footer class="site-footer"><a class="brand" href="./">sportslab<span class="brand-dot">.</span></a><p>Dibuat untuk rasa ingin tahu. <span>PAWM · Fisika TPB ITB</span></p><a href="#page-title">Kembali ke atas ↑</a></footer>
+  <dialog id="clear-dialog"><h2>Hapus buku eksperimen?</h2><p>Seluruh catatan di browser ini akan dihapus. Ekspor CSV dahulu jika ingin menyimpannya.</p><form method="dialog"><button class="button secondary" value="cancel">Batal</button><button class="button primary" value="confirm">Hapus catatan</button></form></dialog>
+  <noscript><p class="noscript">Aktifkan JavaScript untuk menggunakan simulasi Sportslab.</p></noscript>
+</body>
+</html>
